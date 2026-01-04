@@ -65,10 +65,10 @@ void play_azan(const char *prayer) {
 void print_help() {
     printf("Azan Alarm Application for Linux\n");
     printf("Usage:\n");
-    printf("  ./main                 Fetch prayer times and schedule Azan for Dhuhr and Maghrib\n");
-    printf("  ./main show            Display all prayer times\n");
-    printf("  ./main notify <prayer> Play Azan for the specified prayer (used by cron)\n");
-    printf("  ./main -h, --help      Show this help message\n");
+    printf("  ./main                 		Fetch prayer times and schedule Azan for Dhuhr and Maghrib\n");
+    printf("  ./main show            		Display all prayer times\n");
+    printf("  ./main azan_notify <prayer> 	Play Azan for the specified prayer (used by cron)\n");
+    printf("  ./main -h, --help      		Show this help message\n");
 }
 
 /**
@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
         if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) {
             print_help();
-        } else if (strcmp(argv[1], "notify") == 0 && argc > 2) {
+        } else if (strcmp(argv[1], "azan_notify") == 0 && argc > 2) {
             play_azan(argv[2]);
         } else if (strcmp(argv[1], "show") == 0) {
             char *json = fetch_prayer_times();
@@ -148,3 +148,4 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
+
