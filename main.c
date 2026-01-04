@@ -150,8 +150,25 @@ int main(int argc, char *argv[]) {
             free(maghreb);
             return 1;
         }
-        schedule_task(dhuhr, "dhuhr");
-        schedule_task(maghreb, "maghrib");
+        // Schedule cron jobs
+        char exe_path[PATH_MAX];
+        ssize_t len = readlink("/proc/self/exe", exe_path, sizeof(exe_path) - 1);
+        if (len != -1) {
+            exe_path[len] = '\0';
+            // Remove old Azan entries
+            system("crontab -l 2>/dev/null | grep -v 'azan_notify' > /tmp/cron || true");
+            FILE *fp = fopen("/tmp/cron", "a");
+            if (fp) {
+                int hour, min, sec;
+                sscanf(dhuhr, "%d:%d:%d", &hour, &min, &sec);
+                fprintf(fp, "%d %d * * * %s azan_notify dhuhr\n", min, hour, exe_path);
+                sscanf(maghreb, "%d:%d:%d", &hour, &min, &sec);
+                fprintf(fp, "%d %d * * * %s azan_notify maghreb\n", min, hour, exe_path);
+                fclose(fp);
+                system("crontab /tmp/cron");
+                system("rm /tmp/cron");
+            }
+        }
         printf("Scheduled Azan times for today.\n");
         free(json);
         free(dhuhr);
