@@ -13,6 +13,7 @@ make
 ## Usage
 - Run `./main` to fetch times and schedule cron jobs.
 - Run `./main show` to display all prayer times.
+- Run `./main -h` or `./main --help` for help.
 - The app will add cron jobs for Dhuhr and Maghrib.
 - To run on boot, add to crontab: `@reboot /path/to/main`
 
