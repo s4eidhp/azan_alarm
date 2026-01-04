@@ -15,7 +15,8 @@ make
 - Run `./main show` to display all prayer times.
 - Run `./main -h` or `./main --help` for help.
 - The app will add cron jobs for Dhuhr and Maghrib.
-- To run on boot, add to crontab: `@reboot /path/to/main`
+- To run on boot, add to crontab: `@reboot sleep 30 && /full/path/to/main` (waits 30 seconds for network)
+- Alternatively, run the program manually after boot
 
 ## Notes
 - Assumes mpg123 is installed for MP3 playback.
