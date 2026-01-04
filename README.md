@@ -12,10 +12,10 @@ make
 
 ## Usage
 - Run `./main` to fetch times and schedule cron jobs.
+- Run `./main show` to display all prayer times.
 - The app will add cron jobs for Dhuhr and Maghrib.
 - To run on boot, add to crontab: `@reboot /path/to/main`
 
 ## Notes
 - Assumes mpg123 is installed for MP3 playback.
 - Cron jobs are added to the user's crontab.
-

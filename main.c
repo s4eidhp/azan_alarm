@@ -94,6 +94,32 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
         if (strcmp(argv[1], "notify") == 0 && argc > 2) {
             play_azan(argv[2]);
+        } else if (strcmp(argv[1], "show") == 0) {
+            char *json = fetch_prayer_times();
+            if (!json) {
+                printf("Failed to fetch prayer times.\n");
+                return 1;
+            }
+            char *fajr = extract_time(json, "Imsaak");
+            char *sunrise = extract_time(json, "Sunrise");
+            char *dhuhr = extract_time(json, "Noon");
+            char *asr = extract_time(json, "Sunset");
+            char *maghreb = extract_time(json, "Maghreb");
+            char *isha = extract_time(json, "Midnight");
+            printf("Prayer Times for Tehran:\n");
+            printf("Fajr: %s\n", fajr ? fajr : "N/A");
+            printf("Sunrise: %s\n", sunrise ? sunrise : "N/A");
+            printf("Dhuhr: %s\n", dhuhr ? dhuhr : "N/A");
+            printf("Asr: %s\n", asr ? asr : "N/A");
+            printf("Maghreb: %s\n", maghreb ? maghreb : "N/A");
+            printf("Isha: %s\n", isha ? isha : "N/A");
+            free(json);
+            free(fajr);
+            free(sunrise);
+            free(dhuhr);
+            free(asr);
+            free(maghreb);
+            free(isha);
         }
     } else {
         char *json = fetch_prayer_times();
@@ -119,4 +145,3 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
-
