@@ -56,35 +56,7 @@ char* extract_time(const char *json, const char *key) {
  * @param prayer The prayer name.
  */
 void play_azan(const char *prayer) {
-    system("mpg123 azan.mp3");
-}
-
-/**
- * @brief Schedules a cron job.
- * @param time_str The time in HH:MM:SS.
- * @param arg The prayer name.
- */
-void schedule_task(const char *time_str, const char *arg) {
-    int hour, min, sec;
-    sscanf(time_str, "%d:%d:%d", &hour, &min, &sec);
-
-    char exe_path[PATH_MAX];
-    ssize_t len = readlink("/proc/self/exe", exe_path, sizeof(exe_path) - 1);
-    if (len == -1) return;
-    exe_path[len] = '\0';
-
-    char cron_line[256];
-    sprintf(cron_line, "%d %d * * * %s notify %s", min, hour, exe_path, arg);
-
-    // Add to crontab
-    system("crontab -l > /tmp/cron 2>/dev/null || true");
-    FILE *fp = fopen("/tmp/cron", "a");
-    if (fp) {
-        fprintf(fp, "%s\n", cron_line);
-        fclose(fp);
-        system("crontab /tmp/cron");
-        system("rm /tmp/cron");
-    }
+    system("mpg123 -f 3500 /home/s4eidhp/azan_alarm/azan.mp3");
 }
 
 /**
