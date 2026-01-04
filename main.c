@@ -7,47 +7,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <curl/curl.h>
 #include <time.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <limits.h>
 
 /**
- * @brief Callback for libcurl to write data.
- */
-size_t write_callback(void *ptr, size_t size, size_t nmemb, void *data) {
-    size_t realsize = size * nmemb;
-    char **response = (char **)data;
-    *response = realloc(*response, strlen(*response) + realsize + 1);
-    if (*response == NULL) {
-        return 0;
-    }
-    strncat(*response, ptr, realsize);
-    return realsize;
-}
-
-/**
- * @brief Fetches prayer times from the API.
+ * @brief Fetches prayer times from the API using curl command.
  * @return JSON string or NULL on failure.
  */
 char* fetch_prayer_times() {
-    CURL *curl;
-    CURLcode res;
-    char *response = calloc(1, 1);
-
-    curl = curl_easy_init();
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://prayer.aviny.com/api/prayertimes/1");
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-        res = curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-        if (res != CURLE_OK) {
-            free(response);
-            return NULL;
-        }
-    }
-    return response;
+    system("curl -s https://prayer.aviny.com/api/prayertimes/1 > /tmp/prayer.json");
+    FILE *fp = fopen("/tmp/prayer.json", "r");
+    if (!fp) return NULL;
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    char *json = malloc(size + 1);
+    fread(json, 1, size, fp);
+    json[size] = '\0';
+    fclose(fp);
+    return json;
 }
 
 /**

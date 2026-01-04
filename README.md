@@ -3,7 +3,7 @@
 This application fetches prayer times for Tehran from the API, schedules Azan playback for Dhuhr and Maghrib using cron, and plays an MP3 file using mpg123.
 
 ## Requirements
-- libcurl (usually preinstalled)
+- curl (preinstalled on most systems)
 - mpg123 (install with `sudo apt install mpg123`)
 - azan.mp3 file in the same directory
 
